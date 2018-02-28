@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ExoplayerExample.iml" filepath="$PROJECT_DIR$/ExoplayerExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExoplayerAudioToken.iml" filepath="$PROJECT_DIR$/ExoplayerAudioToken.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

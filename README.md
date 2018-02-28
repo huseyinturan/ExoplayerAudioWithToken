@@ -1,9 +1,7 @@
 # ExoplayerExample
 
-A simple ExoPlayer2 audio example displaying how to play audio files.
+A simple ExoPlayer2 audio example displaying how to play audio files with token.
 
 <ol>
-<li>Play audio file stored in the filesystem</li>
-<li>Play audio file attached as a resource in the res/raw folder</li>
-<li>Play audio file from a provided web url</li>
+<li>Play audio file from a provided web url with token</li>
 </ol>

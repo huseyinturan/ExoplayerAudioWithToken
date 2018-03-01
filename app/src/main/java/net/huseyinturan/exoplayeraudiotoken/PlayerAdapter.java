@@ -21,6 +21,8 @@ package net.huseyinturan.exoplayeraudiotoken;
  */
 public interface PlayerAdapter {
 
+    enum State {INIT, LOADING, PLAYING, PAUSED, ERROR}
+
     boolean setMedia(String recordUrl, String token);
 
     void setPlaybackInfoListener(PlaybackInfoListener playbackInfoListener);
@@ -34,4 +36,6 @@ public interface PlayerAdapter {
     void pause();
 
     void seekTo(long position);
+
+    State getState();
 }

@@ -16,8 +16,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private SeekBar seekPlayerProgress;
-    private Button btnPlay, btnPause, btnClose, btnLoad;
-    private TextView txtCurrentTime, txtEndTime, txtMessage;
+    private Button btnPlay, btnPause, btnClose, btnLoad, btnState;
+    private TextView txtCurrentTime, txtEndTime, txtMessage, txtState;
     private PlayerAdapter playerAdapter;
     private static final String TAG = "MainActivity";
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initState();
         initLoadButton();
         initPlayButton();
         initPauseButton();
@@ -109,6 +110,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 playerAdapter.play();
+            }
+        });
+    }
+
+    private void initState() {
+        txtState = (TextView) findViewById(R.id.text_state);
+        btnState = (Button) findViewById(R.id.btnGetState);
+        btnState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                txtState.setText(playerAdapter.getState() + "");
             }
         });
     }

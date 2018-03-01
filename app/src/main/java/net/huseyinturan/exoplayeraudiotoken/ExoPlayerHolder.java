@@ -38,6 +38,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
     private Handler handler;
     private Runnable mSeekbarPositionUpdateTask;
     private boolean isAlreadyLoaded = false;
+    private State currentState = State.INIT;
 
     private ExoPlayer.EventListener eventListener = new ExoPlayer.EventListener() {
         @Override
@@ -77,6 +78,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
                         exoPlayer.setPlayWhenReady(true);
                         if (mPlaybackInfoListener != null)
                             mPlaybackInfoListener.onPlayingStarted();
+                        currentState = State.PLAYING;
                     }
                     break;
                 case ExoPlayer.STATE_BUFFERING:
@@ -95,6 +97,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
                 mPlaybackInfoListener.onError(error.getMessage());
             }
             stopUpdatingCallbackWithPosition();
+            currentState = State.ERROR;
         }
 
         @Override
@@ -142,6 +145,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
         startUpdatingCallbackWithPosition();
         if (mPlaybackInfoListener != null)
             mPlaybackInfoListener.onLoading();
+        currentState = State.LOADING;
     }
 
     @Override
@@ -155,6 +159,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
         stopUpdatingCallbackWithPosition();
         initializeProgressCallback();
         isAlreadyLoaded = false;
+        currentState = State.INIT;
     }
 
     @Override
@@ -164,6 +169,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
             if (handler == null)
                 startUpdatingCallbackWithPosition();
             if (isAlreadyLoaded) {
+                currentState = State.PLAYING;
                 if (mPlaybackInfoListener != null)
                     mPlaybackInfoListener.onPlaying();
             }
@@ -175,6 +181,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
         if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(false);
             if (isAlreadyLoaded) {
+                currentState = State.PAUSED;
                 if (mPlaybackInfoListener != null)
                     mPlaybackInfoListener.onPaused();
             }
@@ -206,6 +213,10 @@ public class ExoPlayerHolder implements PlayerAdapter {
     public void seekTo(long positionMs) {
         if (exoPlayer != null)
             exoPlayer.seekTo(positionMs);
+    }
+
+    public State getState() {
+        return currentState;
     }
 
     private void startUpdatingCallbackWithPosition() {

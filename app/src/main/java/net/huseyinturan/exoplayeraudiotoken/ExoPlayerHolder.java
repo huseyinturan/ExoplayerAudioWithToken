@@ -37,6 +37,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
     private String mToken;
     private Handler handler;
     private Runnable mSeekbarPositionUpdateTask;
+    private boolean isPaused = false;
 
     private ExoPlayer.EventListener eventListener = new ExoPlayer.EventListener() {
         @Override
@@ -71,9 +72,12 @@ public class ExoPlayerHolder implements PlayerAdapter {
                     Log.i(TAG, "ExoPlayer ready! pos: " + getCurrentPosition()
                             + " max: " + getDuration());
                     initializeProgressCallback();
-                    play();
-                    if (mPlaybackInfoListener != null)
-                        mPlaybackInfoListener.onReadyPlaying();
+                   if (!isPaused) {
+                        isPaused = true;
+                        play();
+                        if (mPlaybackInfoListener != null)
+                            mPlaybackInfoListener.onPlayingStarted();
+                    }
                     break;
                 case ExoPlayer.STATE_BUFFERING:
                     Log.i(TAG, "Playback buffering!");
@@ -142,6 +146,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
         }
         stopUpdatingCallbackWithPosition();
         initializeProgressCallback();
+        isPaused = false;
     }
 
     @Override
@@ -155,8 +160,10 @@ public class ExoPlayerHolder implements PlayerAdapter {
 
     @Override
     public void pause() {
-        if (exoPlayer != null)
+        if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(false);
+            isPaused = true;
+        }
     }
 
     public int getDuration() {
@@ -220,7 +227,6 @@ public class ExoPlayerHolder implements PlayerAdapter {
             mPlaybackInfoListener.onBufferingChanged(bufferedPosition);
             mPlaybackInfoListener.onPositionChanged(currentPosition);
         }
-        Log.d("XXXX", "isPlaying : " + exoPlayer.getPlayWhenReady());
     }
 
     public void initializeProgressCallback() {

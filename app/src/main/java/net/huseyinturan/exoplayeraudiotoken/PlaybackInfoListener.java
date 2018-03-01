@@ -34,7 +34,7 @@ public abstract class PlaybackInfoListener {
     void onError(String message) {
     }
 
-    void onReadyPlaying() {
+    void onPlayingStarted() {
     }
 
     void onLoading() {

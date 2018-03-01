@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.Formatter;
 import java.util.Locale;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private SeekBar seekPlayerProgress;
@@ -65,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            void onReadyPlaying() {
-                Log.d(TAG, "onReadyPlaying");
+            void onPlayingStarted() {
+                Log.d(TAG, "onPlayingStarted");
 
             }
 
@@ -120,12 +121,11 @@ public class MainActivity extends AppCompatActivity {
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                playerAdapter.setMedia("https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp32", "Token");
+                playerAdapter.setMedia("https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3", "Token");
                 playerAdapter.prepare();
             }
         });
     }
-
 
     private void initTxtTime() {
         txtCurrentTime = (TextView) findViewById(R.id.time_current);

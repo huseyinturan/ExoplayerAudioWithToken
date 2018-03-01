@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SeekBar seekPlayerProgress;
     private Button btnPlay, btnPause, btnClose, btnLoad;
-    private TextView txtCurrentTime, txtEndTime;
+    private TextView txtCurrentTime, txtEndTime, txtMessage;
     private PlayerAdapter playerAdapter;
     private static final String TAG = "MainActivity";
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         initPauseButton();
         initCloseButton();
         initSeekBar();
-        initTxtTime();
+        initTxt();
 
         playerAdapter = new ExoPlayerHolder(this);
         playerAdapter.setPlaybackInfoListener(new PlaybackInfoListener() {
@@ -68,19 +68,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             void onPlayingStarted() {
                 Log.d(TAG, "onPlayingStarted");
-
+                txtMessage.setText("Playing Started");
             }
 
             @Override
             void onLoading() {
                 Log.d(TAG, "onLoading");
-
+                txtMessage.setText("Loading...");
             }
 
             @Override
             void onError(String message) {
                 Log.d(TAG, "onError " + message);
-
+                txtMessage.setText("Error " + message);
             }
         });
     }
@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initTxtTime() {
+    private void initTxt() {
+        txtMessage = (TextView) findViewById(R.id.text_message);
         txtCurrentTime = (TextView) findViewById(R.id.time_current);
         txtEndTime = (TextView) findViewById(R.id.player_end_time);
     }

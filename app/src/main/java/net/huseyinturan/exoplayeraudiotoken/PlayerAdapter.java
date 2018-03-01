@@ -21,7 +21,7 @@ package net.huseyinturan.exoplayeraudiotoken;
  */
 public interface PlayerAdapter {
 
-    void setMedia(String recordUrl, String token);
+    boolean setMedia(String recordUrl, String token);
 
     void setPlaybackInfoListener(PlaybackInfoListener playbackInfoListener);
 

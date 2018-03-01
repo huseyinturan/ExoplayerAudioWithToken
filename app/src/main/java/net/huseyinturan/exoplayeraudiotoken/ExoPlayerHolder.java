@@ -37,7 +37,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
     private String mToken;
     private Handler handler;
     private Runnable mSeekbarPositionUpdateTask;
-    private boolean isPaused = false;
+    private boolean isPaused = false, isAlreadyLoaded = false;
 
     private ExoPlayer.EventListener eventListener = new ExoPlayer.EventListener() {
         @Override
@@ -72,7 +72,8 @@ public class ExoPlayerHolder implements PlayerAdapter {
                     Log.i(TAG, "ExoPlayer ready! pos: " + getCurrentPosition()
                             + " max: " + getDuration());
                     initializeProgressCallback();
-                   if (!isPaused) {
+                    isAlreadyLoaded = true;
+                    if (!isPaused) {
                         isPaused = true;
                         play();
                         if (mPlaybackInfoListener != null)
@@ -111,13 +112,19 @@ public class ExoPlayerHolder implements PlayerAdapter {
         this.mPlaybackInfoListener = playbackInfoListener;
     }
 
-    public void setMedia(String recordUrl, String token) {
+    public boolean setMedia(String recordUrl, String token) {
+        if (isAlreadyLoaded)
+            return false;
         this.mRecordUri = Uri.parse(recordUrl);
         this.mToken = token;
+        return true;
     }
 
     @Override
     public void prepare() {
+
+        if (isAlreadyLoaded)
+            return;
 
         TrackSelector trackSelector = new DefaultTrackSelector();
 
@@ -147,6 +154,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
         stopUpdatingCallbackWithPosition();
         initializeProgressCallback();
         isPaused = false;
+        isAlreadyLoaded = false;
     }
 
     @Override

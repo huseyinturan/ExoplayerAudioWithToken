@@ -82,6 +82,24 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onError " + message);
                 txtMessage.setText("Error " + message);
             }
+
+            @Override
+            void onPaused() {
+                Log.d(TAG, "Paused ");
+                txtMessage.setText("Paused");
+            }
+
+            @Override
+            void onClosed() {
+                Log.d(TAG, "onClosed ");
+                txtMessage.setText("Closed ");
+            }
+
+            @Override
+            void onPlaying() {
+                Log.d(TAG, "onPlaying ");
+                txtMessage.setText("Playing ");
+            }
         });
     }
 

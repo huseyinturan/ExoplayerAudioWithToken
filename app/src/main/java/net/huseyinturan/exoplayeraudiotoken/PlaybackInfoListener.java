@@ -37,6 +37,15 @@ public abstract class PlaybackInfoListener {
     void onPlayingStarted() {
     }
 
+    void onPlaying() {
+    }
+
     void onLoading() {
+    }
+
+    void onPaused() {
+    }
+
+    void onClosed() {
     }
 }

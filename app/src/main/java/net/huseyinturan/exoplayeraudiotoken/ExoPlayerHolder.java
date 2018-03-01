@@ -37,7 +37,7 @@ public class ExoPlayerHolder implements PlayerAdapter {
     private String mToken;
     private Handler handler;
     private Runnable mSeekbarPositionUpdateTask;
-    private boolean isPaused = false, isAlreadyLoaded = false;
+    private boolean isAlreadyLoaded = false;
 
     private ExoPlayer.EventListener eventListener = new ExoPlayer.EventListener() {
         @Override
@@ -72,10 +72,9 @@ public class ExoPlayerHolder implements PlayerAdapter {
                     Log.i(TAG, "ExoPlayer ready! pos: " + getCurrentPosition()
                             + " max: " + getDuration());
                     initializeProgressCallback();
-                    isAlreadyLoaded = true;
-                    if (!isPaused) {
-                        isPaused = true;
-                        play();
+                    if (!isAlreadyLoaded) {
+                        isAlreadyLoaded = true;
+                        exoPlayer.setPlayWhenReady(true);
                         if (mPlaybackInfoListener != null)
                             mPlaybackInfoListener.onPlayingStarted();
                     }
@@ -151,9 +150,10 @@ public class ExoPlayerHolder implements PlayerAdapter {
             exoPlayer.release();
             exoPlayer = null;
         }
+        if (mPlaybackInfoListener != null)
+            mPlaybackInfoListener.onClosed();
         stopUpdatingCallbackWithPosition();
         initializeProgressCallback();
-        isPaused = false;
         isAlreadyLoaded = false;
     }
 
@@ -163,6 +163,10 @@ public class ExoPlayerHolder implements PlayerAdapter {
             exoPlayer.setPlayWhenReady(true);
             if (handler == null)
                 startUpdatingCallbackWithPosition();
+            if (isAlreadyLoaded) {
+                if (mPlaybackInfoListener != null)
+                    mPlaybackInfoListener.onPlaying();
+            }
         }
     }
 
@@ -170,7 +174,10 @@ public class ExoPlayerHolder implements PlayerAdapter {
     public void pause() {
         if (exoPlayer != null) {
             exoPlayer.setPlayWhenReady(false);
-            isPaused = true;
+            if (isAlreadyLoaded) {
+                if (mPlaybackInfoListener != null)
+                    mPlaybackInfoListener.onPaused();
+            }
         }
     }
 

@@ -40,10 +40,10 @@
                 android:text="Pause" />
 
             <Button
-                android:id="@+id/btnRelease"
+                android:id="@+id/btnClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Release" />
+                android:text="Close" />
         </LinearLayout>
 
         <LinearLayout
